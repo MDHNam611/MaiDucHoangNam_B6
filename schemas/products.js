@@ -36,4 +36,21 @@ let productSchema = mongoose.Schema(
     }, {
     timestamps: true
 })
+// Thêm đoạn này vào trước module.exports trong schemas/products.js
+productSchema.post('save', async function (doc, next) {
+    // Import model bên trong để tránh lỗi Circular Dependency
+    const Inventory = require('./inventories'); 
+    try {
+        // Kiểm tra xem đã có inventory chưa (phòng trường hợp update product)
+        const exists = await Inventory.findOne({ product: doc._id });
+        if (!exists) {
+            await Inventory.create({ product: doc._id });
+        }
+        next();
+    } catch (error) {
+        console.error("Lỗi khi auto-create Inventory:", error);
+        next(error);
+    }
+});
+
 module.exports = mongoose.model('product', productSchema)

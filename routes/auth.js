@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Đọc private.key một lần duy nhất khi khởi động file này
-const privateKey = fs.readFileSync(path.join(__dirname, '../keys/private.key'), 'utf8');
+const privateKey = fs.readFileSync(path.join(__dirname, '../keys/private.pem'), 'utf8');
 
 /* GET home page. */
 router.post('/register', RegisterValidator, handleResultValidator, async function (req, res, next) {

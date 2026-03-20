@@ -11,6 +11,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.set('json spaces', 2);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,13 +26,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-mongoose.connect('mongodb+srv://namku900_db_user:nam123@cluster0.jjrueto.mongodb.net/?appName=Cluster0');
+mongoose.connect('mongodb://127.0.0.1:27017/NNPTUD-C6')
+  .then(() => {
+    // Không cần console.log ở đây vì bạn đã có mongoose.connection.on('connected') ở dưới
+  })
+  .catch((err) => {
+    console.error("Lỗi kết nối MongoDB Local:", err.message);
+  });
+
 mongoose.connection.on('connected', function () {
-  console.log("connected");
-})
+  console.log("connected - MongoDB Local đã sẵn sàng");
+});
 mongoose.connection.on('disconnected', function () {
   console.log("disconnected");
-})
+});
 
 
 
@@ -42,6 +50,7 @@ app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/roles', require('./routes/roles'));
 app.use('/api/v1/products', require('./routes/products'))
 app.use('/api/v1/categories', require('./routes/categories'))
+app.use('/api/v1/inventories', require('./routes/inventories'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

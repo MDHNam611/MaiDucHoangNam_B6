@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Đọc public.key một lần duy nhất
-const publicKey = fs.readFileSync(path.join(__dirname, '../keys/public.key'), 'utf8');
+const publicKey = fs.readFileSync(path.join(__dirname, '../keys/public.pem'), 'utf8');
 
 module.exports = {
     checkLogin: async function (req, res, next) {

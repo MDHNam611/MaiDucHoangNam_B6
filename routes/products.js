@@ -62,13 +62,17 @@ router.post('/', async function (req, res, next) {
       }),
       price: req.body.price,
       description: req.body.description,
-      category: req.body.categoryId,
+      
+      // SỬA Ở ĐÂY: Đổi req.body.categoryId thành req.body.category
+      category: req.body.category, 
+      
       images: req.body.images
     })
     await newObj.save()
     res.send(newObj);
   } catch (error) {
-    res.status(404).send(error.message);
+    // Nên đổi thành 400 Bad Request cho chuẩn RESTful
+    res.status(400).send(error.message); 
   }
 })
 router.put('/:id', async function (req, res, next) {
